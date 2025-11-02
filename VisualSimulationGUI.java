@@ -1,6 +1,7 @@
 // ---------------------------------------------------------------
 //  VisualSimulationGUI – animated dots + log + stats
 // ---------------------------------------------------------------
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -12,6 +13,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class VisualSimulationGUI extends JFrame {
+
     private final CellManager manager;
     private final ResourcePool resourcePool;
     private final JTextArea logArea;
@@ -66,7 +68,7 @@ public class VisualSimulationGUI extends JFrame {
     private void updateStats() {
         int alive = manager.getAliveCellsCount();
         int total = manager.getCells().size();
-        int food  = resourcePool.getAvailableFood();
+        int food = resourcePool.getAvailableFood();
         statsLabel.setText(
                 String.format("Alive: %d | Total: %d | Food: %d", alive, total, food)
         );
@@ -80,6 +82,7 @@ public class VisualSimulationGUI extends JFrame {
     //  Inner panel that draws the moving dots
     // ================================================================
     class SimulationPanel extends JPanel {
+
         private final List<VisualCell> visualCells = new ArrayList<>();
         private final List<Point> foodPoints = new ArrayList<>();
         private final Random random = new Random();
@@ -107,6 +110,9 @@ public class VisualSimulationGUI extends JFrame {
             // food
             synchronized (foodPoints) {
                 foodPoints.clear();
+                if (getWidth() <= 50 || getHeight() <= 50) {
+                    return;
+                }
                 int visible = Math.min(availableFood, 50);
                 for (int i = 0; i < visible; i++) {
                     foodPoints.add(new Point(
@@ -126,14 +132,16 @@ public class VisualSimulationGUI extends JFrame {
             synchronized (foodPoints) {
                 g.setColor(new Color(100, 255, 100));
                 for (Point p : foodPoints) {
-                    g.fillOval(p.x - FOOD_SIZE/2, p.y - FOOD_SIZE/2, FOOD_SIZE, FOOD_SIZE);
+                    g.fillOval(p.x - FOOD_SIZE / 2, p.y - FOOD_SIZE / 2, FOOD_SIZE, FOOD_SIZE);
                 }
             }
 
             // cells
             synchronized (visualCells) {
                 for (VisualCell vc : visualCells) {
-                    if (vc.cell.isAlive()) vc.draw(g);
+                    if (vc.cell.isAlive()) {
+                        vc.draw(g);
+                    }
                 }
             }
         }
@@ -142,6 +150,7 @@ public class VisualSimulationGUI extends JFrame {
         //  One visual cell (position + movement logic)
         // -----------------------------------------------------------
         class VisualCell {
+
             final Cell cell;
             Point pos;
             Point target;
@@ -162,10 +171,14 @@ public class VisualSimulationGUI extends JFrame {
                     pos.x += (int) (dx / dist * speed);
                     pos.y += (int) (dy / dist * speed);
                 } else {
-                    target = new Point(
-                            random.nextInt(getWidth() - 100) + 50,
-                            random.nextInt(getHeight() - 100) + 50
-                    );
+
+                    if (getWidth() > 100 && getHeight() > 100) {
+                        target = new Point(
+                                random.nextInt(getWidth() - 100) + 50,
+                                random.nextInt(getHeight() - 100) + 50
+                        );
+                    }
+
                 }
 
                 // hungry → chase nearest food
@@ -186,17 +199,17 @@ public class VisualSimulationGUI extends JFrame {
             }
 
             void draw(Graphics g) {
-                Color base = cell instanceof AsexualCell ?
-                        new Color(70, 130, 255) : new Color(255, 100, 180);
+                Color base = cell instanceof AsexualCell
+                        ? new Color(70, 130, 255) : new Color(255, 100, 180);
                 Color fill = cell.isHungry() ? base.brighter() : base.darker();
 
                 // body
                 g.setColor(fill);
-                g.fillOval(pos.x - CELL_SIZE/2, pos.y - CELL_SIZE/2, CELL_SIZE, CELL_SIZE);
+                g.fillOval(pos.x - CELL_SIZE / 2, pos.y - CELL_SIZE / 2, CELL_SIZE, CELL_SIZE);
 
                 // border
                 g.setColor(Color.WHITE);
-                g.drawOval(pos.x - CELL_SIZE/2, pos.y - CELL_SIZE/2, CELL_SIZE, CELL_SIZE);
+                g.drawOval(pos.x - CELL_SIZE / 2, pos.y - CELL_SIZE / 2, CELL_SIZE, CELL_SIZE);
 
                 // ID
                 g.setColor(Color.WHITE);
