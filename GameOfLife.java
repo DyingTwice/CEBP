@@ -1,25 +1,21 @@
-import javax.swing.*;
-import java.awt.*;
 import java.io.PrintStream;
 
 public class GameOfLife {
     public static void main(String[] args) {
-        System.out.println("=== JOCUL VIETII - Cu Resurse Limitate ===\n");  // This will only show in terminal (before redirection)
+        System.out.println("=== JOCUL VIETII - Cu Resurse Limitate ===\n");
 
-        // Create ResourcePool with 15 units of food
         ResourcePool resourcePool = new ResourcePool(15);
-
         CellManager manager = new CellManager(resourcePool);
 
-        // Create and show the GUI
-        SimulationGUI gui = new SimulationGUI(manager, resourcePool);
+        // ----- NEW: visual GUI -----
+        VisualSimulationGUI gui = new VisualSimulationGUI(manager, resourcePool);
         gui.setVisible(true);
 
-        // Redirect System.out to duplicate output to GUI log (terminal still gets messages)
+        // Duplicate console → GUI log
         PrintStream guiOut = new GuiPrintStream(System.out, gui.getLogArea());
         System.setOut(guiOut);
 
-        // Create initial cells
+        // ----- create initial cells -----
         Cell cell1 = new AsexualCell(1, manager, resourcePool);
         Cell cell2 = new AsexualCell(2, manager, resourcePool);
         Cell cell3 = new SexualCell(3, manager, resourcePool);
