@@ -1,9 +1,14 @@
+package com.gameoflife;
+
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+
+
 
 // New class: SimulationGUI
 class SimulationGUI extends JFrame {

@@ -1,3 +1,5 @@
+package com.gameoflife;
+
 
 class AsexualCell extends Cell {
     

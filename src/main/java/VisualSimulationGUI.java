@@ -1,6 +1,8 @@
 // ---------------------------------------------------------------
 //  VisualSimulationGUI – animated dots + log + stats
 // ---------------------------------------------------------------
+package com.gameoflife;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -10,6 +12,9 @@ import java.util.List;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+
+
+
 
 public class VisualSimulationGUI extends JFrame {
     private final CellManager manager;
@@ -76,9 +81,8 @@ public class VisualSimulationGUI extends JFrame {
         return logArea;
     }
 
-    // ================================================================
+
     //  Inner panel that draws the moving dots
-    // ================================================================
     class SimulationPanel extends JPanel {
         private final List<VisualCell> visualCells = new ArrayList<>();
         private final List<Point> foodPoints = new ArrayList<>();
@@ -138,9 +142,8 @@ public class VisualSimulationGUI extends JFrame {
             }
         }
 
-        // -----------------------------------------------------------
+
         //  One visual cell (position + movement logic)
-        // -----------------------------------------------------------
         class VisualCell {
             final Cell cell;
             Point pos;

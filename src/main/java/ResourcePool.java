@@ -1,6 +1,9 @@
+package com.gameoflife;
+
 import java.util.Random;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
+
 
 class ResourcePool {
     private int availableFood;
@@ -9,11 +12,11 @@ class ResourcePool {
     
     public ResourcePool(int initialFood) {
         this.availableFood = initialFood;
-        this.foodSemaphore = new Semaphore(initialFood, true); // fair semaphore
+        this.foodSemaphore = new Semaphore(initialFood, true); 
         this.random = new Random();
     }
     
-    // FIX #3: Synchronize the read of availableFood before printing
+    // Synchronize the read of availableFood before printing
     public boolean tryToEat(int cellId, long timeoutMs) throws InterruptedException {
         int currentFood;
         synchronized (this) {
@@ -21,7 +24,7 @@ class ResourcePool {
         }
         System.out.println("[Cell " + cellId + "] Tries to acquire food... (available: " + currentFood + ")");
         
-        // Încearcă să obțină permisiunea în timpul dat
+        // Tries to acquire a permit within the timeout
         boolean acquired = foodSemaphore.tryAcquire(timeoutMs, TimeUnit.MILLISECONDS);
         
         if (acquired) {
@@ -36,7 +39,7 @@ class ResourcePool {
         }
     }
     
-    // Când o celulă moare, produce hrană
+    // When a cell dies, it adds food back to the pool
     public void addFoodFromDeadCell(int cellId) {
         int foodProduced = random.nextInt(5) + 1; // 1-5 unități
         
@@ -44,7 +47,7 @@ class ResourcePool {
             availableFood += foodProduced;
         }
         
-        // Eliberează permisiunile în semaphore
+        // Restore the permits in the semaphore
         foodSemaphore.release(foodProduced);
         
         System.out.println("[ResourcePool] Cell " + cellId + " died and produced " + 

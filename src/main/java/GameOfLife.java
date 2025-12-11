@@ -1,4 +1,7 @@
+package com.gameoflife;
+
 import java.io.PrintStream;
+
 
 public class GameOfLife {
     public static void main(String[] args) {

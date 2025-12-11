@@ -1,3 +1,6 @@
+package com.gameoflife;
+
+
 class SexualCell extends Cell {
     
     public SexualCell(int id, CellManager manager, ResourcePool resourcePool) {
@@ -36,7 +39,7 @@ class SexualCell extends Cell {
             }
         } else {
             System.out.println("[Sexual Cell " + id + "] Failed to find partner");
-            // FIX #5: Use synchronized method
+            // Use synchronized method
             this.resetAfterReproduction();
         }
     }

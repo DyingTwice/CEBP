@@ -1,3 +1,6 @@
+package com.gameoflife;
+
+
 abstract class Cell implements Runnable {
     protected int id;
     protected int mealsEaten;
@@ -20,6 +23,7 @@ abstract class Cell implements Runnable {
         this.isHungry = true;
         this.wantsToReproduce = false;
     }
+
     
     @Override
     public void run() {

@@ -1,6 +1,9 @@
+package com.gameoflife;
+
 import javax.swing.*;
 import java.awt.*;
 import java.io.PrintStream;
+
 
 class GuiPrintStream extends PrintStream {
     private final PrintStream original;
